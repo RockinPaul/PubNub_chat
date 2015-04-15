@@ -16,9 +16,37 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    [PubNub setDelegate:self]; // Add This Line
+    
     return YES;
 }
+
+- (void)pubnubClient:(PubNub *)client didConnectToOrigin:(NSString *)origin {
+    NSLog(@"DELEGATE: Connected to  origin: %@", origin);
+}
+
+//===============================================//
+// Optional: Add the following to AppDelegate.m
+//===============================================//
+
+// #1 Delegate looks for subscribe events
+- (void)pubnubClient:(PubNub *)client didSubscribeOnChannels:(NSArray *)channels {
+    NSLog(@"DELEGATE: Subscribed to channel:%@", channels);
+}
+// #2 Delegate looks for message receive events
+- (void)pubnubClient:(PubNub *)client didReceiveMessage:(PNMessage *)message {
+    NSLog(@"DELEGATE: Message received.");
+}
+
+//===============================================//
+// Optional: Add the following AppDelegate.m file
+//===============================================//
+// #4 add delegate log after a message is sent.
+- (void)pubnubClient:(PubNub *)client didSendMessage:(PNMessage *)message{
+    NSLog(@"DELEGATE: client sent message: %@", message);
+}
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
